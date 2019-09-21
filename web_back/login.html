@@ -12,7 +12,7 @@
   </head>
 
   <body>
-    <div class="modal fade" tabindex="-1" role="dialog">
+    <div id ="myModal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -50,6 +50,35 @@
       </div>
     </div>
 
-    
+    <script src="./js/lib/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./js/utils/common.js"></script>
+    <script>
+      //登录功能
+      //获取输入的信息，提交请求
+      //进行判断是否为空
+      //获取登录按钮设置点击事件
+      $('#btnLogin').click(function(){
+        //获取用户名
+        var userName = $('#userName').val();
+        //获取密码
+        var password = $('#password').val();
+        //判断一下如果内容为空，进行提示
+        if(userName === ''||password === ''){
+          $('#pResult').html('请输入用户名和密码');
+          $('#myModal').modal('show');
+        }else{
+          user.login(userName,password,function(res){
+            if(res.code==200){
+                    location.href='./index.html';
+              }else{
+                  //用户名或密码输入错误
+                  $('#pResult').html(res.msg);
+                  $('#myModal').modal('show');
+              }
+          });
+        }        
+      })
+    </script>
   </body>
 </html>
