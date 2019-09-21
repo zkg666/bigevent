@@ -158,7 +158,7 @@
         }
       }
     </script>
-
+    <script src="./js/utils/url.js"></script>
     <script src="./js/utils/common.js"></script>
     <script src="./js/bootstrap/js/bootstrap.min.js"></script>
     <script>
@@ -175,6 +175,13 @@
               })
             }
           })
+        })
+        //获取用户的信息
+        user.getuser(function(res){
+          if(res.code == 200){
+            $('#userName').html(res.data.nickname);
+            $('#userImg').attr('src',res.data.user_pic);
+          }
         })
       })    
     </script>

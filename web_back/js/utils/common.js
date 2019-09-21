@@ -4,7 +4,7 @@ var user = {
     login:function(userName,password,callback){
         //提交ajax请求
         $.ajax({
-            url:'http://localhost:8000/admin/login',
+            url:url.login,
             type:'post',
             data:{user_name:userName,password:password},
             success:function(res){
@@ -15,7 +15,7 @@ var user = {
     //第二个ajax请求功能，进行管理员退出功能
     logout:function(callback){
         $.ajax({
-            url:'http://localhost:8000/admin/logout',
+            url:url.logout,
             type:'post',
             success:function(res){
                 callback(res);
@@ -23,5 +23,15 @@ var user = {
         })
     },
     //第三个ajax请求功能，获取用户信息的功能
-  
+    // http://localhost:8000/admin/getuser
+    getuser:function(callback){
+        $.ajax({
+            url:url.getuser,
+            type:'get',
+            success:function(res){
+                callback(res);
+            }
+        })
+    }
+    
 }
