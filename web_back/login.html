@@ -12,6 +12,7 @@
   </head>
 
   <body>
+    <!-- 模态框 -->
     <div id ="myModal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -70,7 +71,7 @@
         }else{
           user.login(userName,password,function(res){
             if(res.code==200){
-                    location.href='./index.html';
+                  location.href='./index.html';
               }else{
                   //用户名或密码输入错误
                   $('#pResult').html(res.msg);
