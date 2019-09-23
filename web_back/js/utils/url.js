@@ -7,5 +7,6 @@ var url = {
     //文章类型地址
     search:base+'/admin/category_search',
     add:base+'/admin/category_add',
-    delete:base+'/admin/category_delete'
+    delete:base+'/admin/category_delete',
+    edit:base+'/admin/category_edit'
 }

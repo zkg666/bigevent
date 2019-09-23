@@ -52,6 +52,7 @@
                     </tr>
                 </thead>
                 <tbody id="article_tbody">
+                    
                     <!-- <tr>
                         <td>未分类</td>
                         <td>uncategorized</td>
@@ -60,9 +61,7 @@
                                 class="btn btn-info btn-xs">编辑</a>
                             <a href="javascript:deleteTr( 1 );" class="btn btn-danger btn-xs">删除</a>
                         </td>
-                    </tr> -->
-
-                    
+                    </tr> -->                    
                 </tbody>
                 <tfoot>
                     <tr>
@@ -84,6 +83,7 @@
             </div>
             <div class="modal-body">
               <form>
+                <input type="hidden" id="it-input">
                 <div class="form-group">
                   <label for="recipient-name" class="control-label">分类名称:</label>
                   <input type="text" class="form-control" id="recipient-name">
@@ -129,12 +129,13 @@
     <script src="./js/lib/template-web.js"></script>
     <!-- 设置模块 -->
     <script id="tmp" type="text/html">
+      
       {{each data item}}
         <tr>
             <td>{{item.name}}</td>
             <td>{{item.slug}}</td>
             <td class="text-center">
-                <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});"
+                <a href="javascript:editTr({'id':'{{item.id}}','name':'{{item.name}}','slug':'{{item.slug}}'});"
                     class="btn btn-info btn-xs">编辑</a>
                 <a data-id="{{item.id}}" class="btn btn-danger btn-xs">删除</a>
             </td>
@@ -150,6 +151,18 @@
     //     }
     //   })
     // }
+    var status = '新增';
+    //第四个编辑功能，将对象传入editTr函数中  
+      function editTr(obj){
+        $('#model_add').html('修改');
+        $('#divResult').hide()
+        //点击时获取值并展示在输入框中
+        $('#recipient-name').val(obj.name);
+        $('#recipient-slug').val(obj.slug);
+        status = '修改';
+        //点击修改时发送请求
+        $('#it-input').val(obj.id);
+    }   
     //封装获取功能
     function exhibition(){
       category.search(function(res){
@@ -164,30 +177,55 @@
       exhibition();
       //点击最下面新增的按钮时需要隐藏提醒框
       $('#xzfl').click(function(){
+        //修改显示的内容
+        $('#recipient-name').val('');
+        $('#recipient-slug').val('');
+        $('#addModal .modal-title').html('新增分类名称');
+        $('#model_add').html('新增');
         $('#divResult').hide();
+        status='新增';
       })
       //第二个新增功能
-      $('#model_add').click(function(){     
+  
+      //新增和编辑公用一个框
+        $('#model_add').click(function(){    
         //点击的时候获取输入框中的值，发送ajax请求
         var name = $('#recipient-name').val();
         var slug = $('#recipient-slug').val();
         if(name==''||slug==''){
           $('#divResult').show().html('请输入内容');
         }
-        category.add(name,slug,function(res){
-          if(res.code == 200){
+        if(status=='新增'){
+          category.add(name,slug,function(res){
+            if(res.code == 200){
+              exhibition();
+              $('#recipient-name').val('');
+              $('#recipient-slug').val('');
+              $('#addModal').modal('hide');
+            }else{
+              $('#divResult').show().html(res.msg);
+            }
+          })
+        }else{
+          //编辑功能
+          var id = $('#it-input').val();
+          //点击修改时发送请求
+          $('#myModal').modal('hide');
+          category.edit(id,name,slug,function(res){
+          if(res.code==200){
+            //成功了
             exhibition();
-            $('#recipient-name').val('');
-            $('#recipient-slug').val('');
             $('#addModal').modal('hide');
           }
         })
-      })
+        }        
+      })      
       //第三个删除功能
       $('#article_tbody').on('click','.btn-danger',function(e){
         $('#myModal').modal('show');
         //获取id
         var id = e.currentTarget.dataset.id;
+        console.log(e)
         $('#bt-left').click(function(){
           //发请求
           category.delete(id,function(res){
@@ -197,6 +235,7 @@
           })
         })
       })
+      
 
       
 

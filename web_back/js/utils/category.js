@@ -33,5 +33,16 @@ var category = {
                 callback(res);
             }
         })
+    },
+    //编辑功能
+    edit:function(id,name,slug,callback){
+        $.ajax({
+            url:url.edit,
+            type:'post',
+            data:{id:id,name:name,slug:slug},
+            success:function(res){
+                callback(res);
+            }
+        })
     }
 }
