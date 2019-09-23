@@ -11,6 +11,17 @@ var category = {
                 callback(res);
             }
         })
+    },
+    //新增功能
+    add:function(name,slug,callback){
+        $.ajax({
+            url:url.add,
+            type:'post',
+            data:{name:name,slug:slug},
+            success:function(res){
+                callback(res);
+            }
+        })
     }
 
 }
