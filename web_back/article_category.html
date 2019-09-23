@@ -127,8 +127,7 @@
     <script src="./js/utils/category.js"></script>
     <script src="./js/lib/template-web.js"></script>
     <!-- 设置模块 -->
-    <script id="tmp" type="text/html">
-      
+    <script id="tmp" type="text/html">     
       {{each data item}}
         <tr>
             <td>{{item.name}}</td>
@@ -149,7 +148,7 @@
     //       exhibition();
     //     }
     //   })
-    // }
+    // }   
     var status = '新增';
     //第四个编辑功能，将对象传入editTr函数中  
       function editTr(obj){
@@ -220,6 +219,7 @@
       })      
       //第三个删除功能
       $('#article_tbody').on('click','.btn-danger',function(e){
+        console.log($('.btn-danger').attr('data-id'));
         $('#myModal').modal('show');
         //获取id
         var id = e.currentTarget.dataset.id;
