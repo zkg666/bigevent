@@ -15,6 +15,29 @@
 </head>
 
 <body>
+    <!-- 模态框 -->
+    <div id ="myModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">尊敬的管理员大大</h4>
+            </div>
+            <div class="modal-body">
+              <p id="pResult">您确定要删除吗?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="bt-left" class="btn btn-default" data-dismiss="modal">确定</button>
+              <button type="button" id="bt-right" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+
     <div class="container-fluid">
         <div class="common_title">
             文章类别管理
@@ -44,7 +67,7 @@
                 <tfoot>
                     <tr>
                         <td colspan="3" class="text-center">
-                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#addModal">新增分类</a>
+                            <a href="#" id="xzfl" class="btn btn-success" data-toggle="modal" data-target="#addModal">新增分类</a>
                         </td>
                     </tr>
                 </tfoot>
@@ -70,6 +93,7 @@
                   <input type="text" class="form-control" id="recipient-slug">
                 </div>
               </form>
+              <div class="alert alert-danger" role="alert" id="divResult" style="display: none"></div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" id="model_shutoff">关闭</button>
@@ -88,9 +112,9 @@
             $('#addModal').modal('hide');
           });
 
-          $('#model_add').click(function(){
-            $('#addModal').modal('hide');
-          });
+          // $('#model_add').click(function(){
+          //   $('#addModal').modal('hide');
+          // });
 
           $('.category_table').delegate('a','click',function(){
               if($(this).hasClass('btn-info')){
@@ -112,12 +136,20 @@
             <td class="text-center">
                 <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});"
                     class="btn btn-info btn-xs">编辑</a>
-                <a href="javascript:deleteTr( 1 );" class="btn btn-danger btn-xs">删除</a>
+                <a data-id="{{item.id}}" class="btn btn-danger btn-xs">删除</a>
             </td>
         </tr>
       {{/each}}
     </script>
     <script>
+    //删除功能，写在了a的行内式中，所以只需要写deleteTr函数即可
+    // function deleteTr(id){
+    //   category.delete(id,function(res){
+    //     if(res.code == 200){
+    //       exhibition();
+    //     }
+    //   })
+    // }
     //封装获取功能
     function exhibition(){
       category.search(function(res){
@@ -130,19 +162,42 @@
     $(function(){
       //第一个获取类型功能完成
       exhibition();
+      //点击最下面新增的按钮时需要隐藏提醒框
+      $('#xzfl').click(function(){
+        $('#divResult').hide();
+      })
       //第二个新增功能
-      $('#model_add').click(function(){
+      $('#model_add').click(function(){     
         //点击的时候获取输入框中的值，发送ajax请求
         var name = $('#recipient-name').val();
         var slug = $('#recipient-slug').val();
+        if(name==''||slug==''){
+          $('#divResult').show().html('请输入内容');
+        }
         category.add(name,slug,function(res){
           if(res.code == 200){
             exhibition();
             $('#recipient-name').val('');
             $('#recipient-slug').val('');
+            $('#addModal').modal('hide');
           }
         })
       })
+      //第三个删除功能
+      $('#article_tbody').on('click','.btn-danger',function(e){
+        $('#myModal').modal('show');
+        //获取id
+        var id = e.currentTarget.dataset.id;
+        $('#bt-left').click(function(){
+          //发请求
+          category.delete(id,function(res){
+            if(res.code == 200){
+              exhibition();
+            }
+          })
+        })
+      })
+
       
 
     })

@@ -22,6 +22,16 @@ var category = {
                 callback(res);
             }
         })
+    },
+    //删除功能
+    delete:function(id,callback){
+        $.ajax({
+            url:url.delete,
+            type:'post',
+            data:{id:id},
+            success:function(res){
+                callback(res);
+            }
+        })
     }
-
 }

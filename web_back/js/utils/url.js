@@ -6,5 +6,6 @@ var url = {
     getuser:base+'/admin/getuser',
     //文章类型地址
     search:base+'/admin/category_search',
-    add:base+'/admin/category_add'
+    add:base+'/admin/category_add',
+    delete:base+'/admin/category_delete'
 }
