@@ -51,8 +51,7 @@
                         <th class="text-center" width="100">操作</th>
                     </tr>
                 </thead>
-                <tbody id="article_tbody">
-                    
+                <tbody id="article_tbody">                    
                     <!-- <tr>
                         <td>未分类</td>
                         <td>uncategorized</td>
@@ -185,8 +184,7 @@
         $('#divResult').hide();
         status='新增';
       })
-      //第二个新增功能
-  
+      //第二个新增功能  
       //新增和编辑公用一个框
         $('#model_add').click(function(){    
         //点击的时候获取输入框中的值，发送ajax请求
@@ -208,7 +206,7 @@
           })
         }else{
           //编辑功能
-          var id = $('#it-input').val();
+          var id = $('#it-input').val();         
           //点击修改时发送请求
           $('#myModal').modal('hide');
           category.edit(id,name,slug,function(res){
@@ -225,7 +223,6 @@
         $('#myModal').modal('show');
         //获取id
         var id = e.currentTarget.dataset.id;
-        console.log(e)
         $('#bt-left').click(function(){
           //发请求
           category.delete(id,function(res){
@@ -235,10 +232,6 @@
           })
         })
       })
-      
-
-      
-
     })
     
     
